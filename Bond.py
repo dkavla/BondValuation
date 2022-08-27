@@ -10,22 +10,22 @@ class Bond:
         self._calculatedPrice = 0
 
     """Getter Methods"""
-    def get_Maturity(self):
+    def get_Maturity(self)->int:
         return self.maturity
 
-    def get_CouponRate(self):
+    def get_CouponRate(self)->float:
         return self.cpnRate
 
-    def get_Face_Val(self):
+    def get_Face_Val(self)->float:
         return self.faceValue
 
-    def get_Price_Quoted(self):
+    def get_Price_Quoted(self)->float:
         return self.quotedPrice
 
-    def get_YTM(self):
+    def get_YTM(self)->float:
         return self.yieldToMaturity
 
-    def get_Calc_Price(self):
+    def get_Calc_Price(self)->float:
         """If price was not calcualted indicate so to user when calling this method"""
         if self._calculatedPrice == 0:
             return "Price was not calculated! Perform calculation first!"
@@ -34,7 +34,7 @@ class Bond:
 
 
 
-    def _discount_Cpn(self, t):
+    def _discount_Cpn(self, t)->float:
         """A helper function for discounting individual coupons at time t"""
         cpn = self._faceValue * self._cpnRate
 
@@ -43,7 +43,7 @@ class Bond:
             return (cpn + self._faceValue) / pow(1 + self._yieldToMaturity, t)
         return cpn / pow(1 + self._yieldToMaturity, t)
 
-    def _calc_Price(self):
+    def _calc_Price(self)->float:
         """The function that performs the actual bond price calculation
         
         Each coupon payment is discounted from time t to present and the results
@@ -61,21 +61,23 @@ class Bond:
 
 
 
-    def is_Discount(self):
+    def is_Discount(self)->bool:
         """Determines whether the bond price is selling at a discount"""
         if self._quotedPrice < self._calcPrice:
             return True
         return False
 
-    def is_Premium(self):
+    def is_Premium(self)->bool:
         """Determines whether the bond price is selling at a premium"""
         if self._quotedPrice > self._calcPrice:
             return True
         return False
 
-    def is_Par(self):
+    def is_Par(self)->bool:
         """Determines whether the bond prcie is selling at par"""
         if self._quotedPrice == self._calcPrice:
             return True
         return False
+
+
 
