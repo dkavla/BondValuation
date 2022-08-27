@@ -9,9 +9,7 @@ class Bond:
         self._quotedPrice = p
         self._calculatedPrice = 0
 
-    """Getter Methods
-    
-    Retrieve the Bond attributes when called on instance"""
+    """Getter Methods"""
     def getMaturity(self):
         return self.maturity
 
@@ -34,5 +32,50 @@ class Bond:
         else:
             return self._calculatedPrice
 
-    
+
+
+    def _discountCpn(self, t):
+        """A helper function for discounting individual coupons at time t"""
+        cpn = self._faceValue * self._cpnRate
+
+        """Special case: if t is the final payment then we discount the cpn plus face value"""
+        if t == self._maturity:
+            return (cpn + self._faceValue) / pow(1 + self._yieldToMaturity, t)
+        return cpn / pow(1 + self._yieldToMaturity, t)
+
+    def _calcPrice(self):
+        """The function that performs the actual bond price calculation
+        
+        Each coupon payment is discounted from time t to present and the results
+        are summed up to give the price"""
+        price = 0
+        for i in range(1, self._maturity + 1):
+            price += self._discountCpn(i)
+        return price
+
+    def bondPrice(self):
+        """Calculates the bond price and assigns it to the _calculatedPrice attribute
+        
+        The actual calculation is performed by a separate method"""
+        self._calculatedPrice = self._calcPrice()
+
+
+
+    def isDiscount(self):
+        """Determines whether the bond price is selling at a discount"""
+        if self._quotedPrice < self._calcPrice:
+            return True
+        return False
+
+    def isPremium(self):
+        """Determines whether the bond price is selling at a premium"""
+        if self._quotedPrice > self._calcPrice:
+            return True
+        return False
+
+    def isPar(self):
+        """Determines whether the bond prcie is selling at par"""
+        if self._quotedPrice == self._calcPrice:
+            return True
+        return False
 
