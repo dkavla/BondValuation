@@ -39,12 +39,12 @@ class Bond:
     """
     def __discount_Cpn(self, t)->float:
         """A helper function for discounting individual coupons at time t"""
-        cpn = self.__faceValue * self.__cpnRate
+        cpn = self.__faceValue * (self.__cpnRate / 100)
 
         """Special case: if t is the final payment then we discount the cpn plus face value"""
         if t == self._maturity:
-            return (cpn + self._faceValue) / pow(1 + self._yieldToMaturity, t)
-        return cpn / pow(1 + self._yieldToMaturity, t)
+            return (cpn + self._faceValue) / pow(1 + (self._yieldToMaturity / 100), t)
+        return cpn / pow(1 + (self._yieldToMaturity / 100), t)
 
     def __calc_Price(self)->float:
         """The function that performs the actual bond price calculation
@@ -85,7 +85,17 @@ class Bond:
             return True
         return False
 
-
+    """Returns a string representation of the object"""
+    def __repr__(self) -> str:
+        return f"""
+        =============================================
+        Price: {self.__quotedPrice / 10}%
+        Par Value: ${self.__faceValue}
+        Yield to Maturity: {self.__yieldToMaturity}%
+        Coupon: {self.__cpnRate}%
+        Maturity: {self.__maturity}
+        =============================================
+        """
 
 
 class ConvertibleBond:
@@ -96,3 +106,4 @@ class ConvertibleBond:
 
 class ZeroCouponBond:
     pass
+
