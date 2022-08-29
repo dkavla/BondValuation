@@ -13,7 +13,7 @@ class Bond:
     def get_Maturity(self)->int:
         return self.__maturity
 
-    def get_CouponRate(self)->float:
+    def get_Coupon_Rate(self)->float:
         return self.__cpnRate
 
     def get_Face_Val(self)->float:
@@ -33,7 +33,10 @@ class Bond:
             return self.__calculatedPrice
 
 
-
+    """
+        These functions help calculate the bond price 
+        based on the object's attributes
+    """
     def __discount_Cpn(self, t)->float:
         """A helper function for discounting individual coupons at time t"""
         cpn = self.__faceValue * self.__cpnRate
@@ -60,7 +63,10 @@ class Bond:
         self._calculatedPrice = self.__calc_Price()
 
 
-
+    """
+        These fucntions are useful for determining whether
+        the calculated price is a discount, premium, or at par
+    """
     def is_Discount(self)->bool:
         """Determines whether the bond price is selling at a discount"""
         if self.__quotedPrice < self.__calc_Price:
@@ -81,3 +87,12 @@ class Bond:
 
 
 
+
+class ConvertibleBond:
+    pass
+
+
+
+
+class ZeroCouponBond:
+    pass
