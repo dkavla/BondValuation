@@ -42,9 +42,9 @@ class Bond:
         cpn = self.__faceValue * (self.__cpnRate / 100)
 
         """Special case: if t is the final payment then we discount the cpn plus face value"""
-        if t == self._maturity:
-            return (cpn + self._faceValue) / pow(1 + (self._yieldToMaturity / 100), t)
-        return cpn / pow(1 + (self._yieldToMaturity / 100), t)
+        if t == self.__maturity:
+            return (cpn + self.__faceValue) / pow(1 + (self.__yieldToMaturity / 100), t)
+        return cpn / pow(1 + (self.__yieldToMaturity / 100), t)
 
     def __calc_Price(self)->float:
         """The function that performs the actual bond price calculation
@@ -52,7 +52,7 @@ class Bond:
         Each coupon payment is discounted from time t to present and the results
         are summed up to give the price"""
         price = 0
-        for i in range(1, self._maturity + 1):
+        for i in range(1, self.__maturity + 1):
             price += self.__discount_Cpn(i)
         return price
 
@@ -60,7 +60,8 @@ class Bond:
         """Calculates the bond price and assigns it to the _calculatedPrice attribute
         
         The actual calculation is performed by a separate method"""
-        self._calculatedPrice = self.__calc_Price()
+        self.__calculatedPrice = self.__calc_Price()
+        return round(self.get_Calc_Price(), 2)
 
 
     """
@@ -86,7 +87,7 @@ class Bond:
         return False
 
     """Returns a string representation of the object"""
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return f"""
         =============================================
         Price: {self.__quotedPrice / 10}%
@@ -107,3 +108,7 @@ class ConvertibleBond:
 class ZeroCouponBond:
     pass
 
+
+if __name__ == "__main__":
+    a = Bond(3, 8, 1000, 10, 950)
+    print(a.bond_Price())
