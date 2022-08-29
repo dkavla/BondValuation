@@ -14,7 +14,7 @@ def Macaulay_Duration(b: Bond)->float:
     for t in range(1, total_periods + 1):
         weight_at_t = weight_of_Cpn(t)
         duration += (t * weight_at_t)
-    return duration
+    return round(duration, 2)
 
 def Modified_Duration(b: Bond)->float:
     """Returns the Modified Duration of the passed in bond object"""
