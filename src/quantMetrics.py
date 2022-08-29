@@ -24,7 +24,7 @@ def Macaulay_Duration(b: Bond)->float:
 
 def Modified_Duration(b: Bond)->float:
     """Returns the Modified Duration of the passed in bond object"""
-    pass
+    return round( Macaulay_Duration(b) / (1 + (b.get_YTM() / 100)), 2 )
 
 def Convexity(b: Bond)->float:
     """Measures the convexity of the passed in bond object"""
@@ -37,7 +37,3 @@ def holding_Period_Return(b: Bond)->float:
 def yield_To_Call(b: Bond, n: int)->float:
     """Calculates the yield to call of the passed in bond"""
     pass
-
-if __name__ == "__main__":
-    a = Bond(3, 8, 1000, 10, 950)
-    print(Macaulay_Duration(a))
