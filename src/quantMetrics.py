@@ -28,14 +28,26 @@ def Modified_Duration(b: Bond)->float:
 
 def Convexity(b: Bond)->float:
     """Measures the convexity of the passed in bond object"""
-    pass
+    def second_factor():
+        """Helper function for calculating the second factor"""
+        def discount(pmt, y, t):
+            """Helper function for discounting coupons"""
+            return pmt / pow((1 + y), t)
+
+        cpn = b.get_Coupon_Rate() / 100
+        ytm = b.get_YTM() / 100
+        total = 0
+
+        for i in range(1, b.get_Maturity() + 1):
+            total += discount(cpn, ytm, i) * (pow(i, 2) + i)
+
+        return total
+
+    first_factor = 1 / (b.bond_Price() * pow(1 + (b.get_YTM() / 100), 2))
+    return first_factor * second_factor()
 
 def holding_Period_Return(b: Bond, current_price)->float:
     """Returns the holding period return of the passed in bond"""
     initial_price = b.bond_Price()
     cpn = b.get_Coupon_Rate() * b.get_Face_Val()
     return (cpn + (current_price - initial_price)) / initial_price
-
-def yield_To_Call(b: Bond, n: int)->float:
-    """Calculates the yield to call of the passed in bond"""
-    pass
