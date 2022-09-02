@@ -6,7 +6,8 @@
 import unittest
 from quantMetrics import Macaulay_Duration, Modified_Duration
 from Bond import Bond
-import sys
+
+
 
 class TestQuantMetrics(unittest.TestCase):
 
