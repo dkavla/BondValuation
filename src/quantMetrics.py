@@ -30,9 +30,11 @@ def Convexity(b: Bond)->float:
     """Measures the convexity of the passed in bond object"""
     pass
 
-def holding_Period_Return(b: Bond)->float:
+def holding_Period_Return(b: Bond, current_price)->float:
     """Returns the holding period return of the passed in bond"""
-    pass
+    initial_price = b.bond_Price()
+    cpn = b.get_Coupon_Rate() * b.get_Face_Val()
+    return (cpn + (current_price - initial_price)) / initial_price
 
 def yield_To_Call(b: Bond, n: int)->float:
     """Calculates the yield to call of the passed in bond"""
