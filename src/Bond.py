@@ -70,19 +70,22 @@ class Bond:
     """
     def is_Discount(self)->bool:
         """Determines whether the bond price is selling at a discount"""
-        if self.__quotedPrice < self.__calc_Price:
+        price = self.__calc_Price()
+        if self.__quotedPrice < price:
             return True
         return False
 
     def is_Premium(self)->bool:
         """Determines whether the bond price is selling at a premium"""
-        if self.__quotedPrice > self.__calc_Price:
+        price = self.__calc_Price()
+        if self.__quotedPrice > price:
             return True
         return False
 
     def is_Par(self)->bool:
         """Determines whether the bond prcie is selling at par"""
-        if self.__quotedPrice == self.__calc_Price:
+        price = self.__calc_Price()
+        if self.__quotedPrice == price:
             return True
         return False
 
