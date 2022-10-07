@@ -1,6 +1,7 @@
 from Bond import Bond
 from quantMetrics import *
 
+
 """Prints the available operations and actions for user"""
 def menu():
     print("""
