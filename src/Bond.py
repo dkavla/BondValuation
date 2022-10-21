@@ -27,10 +27,7 @@ class Bond:
 
     def get_Calc_Price(self)->float:
         """If price was not calcualted indicate so to user when calling this method"""
-        if self.__calculatedPrice == 0:
-            return "Price was not calculated! Perform calculation first!"
-        else:
-            return self.__calculatedPrice
+        return self.bond_Price()
 
 
     """
@@ -39,12 +36,12 @@ class Bond:
     """
     def __discount_Cpn(self, t)->float:
         """A helper function for discounting individual coupons at time t"""
-        cpn = self.__faceValue * (self.__cpnRate / 100)
+        cpn = self.__faceValue * (self.__cpnRate)
 
         """Special case: if t is the final payment then we discount the cpn plus face value"""
         if t == self.__maturity:
-            return (cpn + self.__faceValue) / pow(1 + (self.__yieldToMaturity / 100), t)
-        return cpn / pow(1 + (self.__yieldToMaturity / 100), t)
+            return (cpn + self.__faceValue) / pow(1 + (self.__yieldToMaturity), t)
+        return cpn / pow(1 + (self.__yieldToMaturity), t)
 
     def __calc_Price(self)->float:
         """The function that performs the actual bond price calculation
@@ -61,46 +58,10 @@ class Bond:
         
         The actual calculation is performed by a separate method"""
         self.__calculatedPrice = self.__calc_Price()
-        return round(self.get_Calc_Price(), 2)
-
-
-    """
-        These fucntions are useful for determining whether
-        the calculated price is a discount, premium, or at par
-    """
-    def is_Discount(self)->bool:
-        """Determines whether the bond price is selling at a discount"""
-        price = self.__calc_Price()
-        if self.__quotedPrice < price:
-            return True
-        return False
-
-    def is_Premium(self)->bool:
-        """Determines whether the bond price is selling at a premium"""
-        price = self.__calc_Price()
-        if self.__quotedPrice > price:
-            return True
-        return False
-
-    def is_Par(self)->bool:
-        """Determines whether the bond prcie is selling at par"""
-        price = self.__calc_Price()
-        if self.__quotedPrice == price:
-            return True
-        return False
+        return round(self.__calculatedPrice, 2)
 
     """Returns a string representation of the object"""
     def __str__(self) -> str:
-        return f"""
-        =============================================
-        Price: {self.__quotedPrice / 10}%
-        Par Value: ${self.__faceValue}
-        Yield to Maturity: {self.__yieldToMaturity}%
-        Coupon: {self.__cpnRate}%
-        Maturity: {self.__maturity}
-        =============================================
-        """
-
-    
+        return f"=============================================\nPrice: {round(self.__quotedPrice / 10, 2)}%\nPar Value: ${self.__faceValue}\nYield to Maturity: {self.__yieldToMaturity * 100}%\nCoupon: {self.__cpnRate * 100}%\nMaturity: {self.__maturity} year(s)\n============================================="
 
 
