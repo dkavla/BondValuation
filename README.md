@@ -1,6 +1,6 @@
 
 # Bond Valuation Program
-This program takes information about a bond and calculates the bond's price. It provides the methods for doing so with the addition of methods which return a boolean value when called to determine whether the bond is selling at a discount, premium, or at par value. The latter three methods use the calculated price and the quoted price that is passed in along with the other information when creating a new instance of the Bond class.
+This program takes information about a bond and calculates the bond's price. It accepts user input which then runs the numbers and calculates the price by discounting the coupon payments as well as additional metrics like Modified Duration, Macaulay Duration, and Convexity.
 
 
 ## Additional Functions
