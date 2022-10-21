@@ -2,25 +2,6 @@ from Bond import Bond
 from quantMetrics import *
 
 
-"""Prints the available operations and actions for user"""
-def menu():
-    print("""
-    Pick a menu option:
-    1.) Enter Bond Info.
-    2.) Print Bond Info.
-    3.) Get Calculated Bond Price 
-    4.) Calculate Macaulay Duration
-    5.) Calculate Modified Duration
-    6.) Calculate Convexity
-    7.) Calculate Holding Period Return 
-    8.) Bond Pricing (Discount, Premium, or Par)
-    9.) List bonds in table
-    10.) Add current instance to table
-    0.) Terminate Program
-    """)
-
-
-
 if __name__ == "__main__":
     b = None # holds the current instance of bond
     while True:
