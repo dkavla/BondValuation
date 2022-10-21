@@ -14,61 +14,37 @@ def menu():
     6.) Calculate Convexity
     7.) Calculate Holding Period Return 
     8.) Bond Pricing (Discount, Premium, or Par)
+    9.) List bonds in table
+    10.) Add current instance to table
     0.) Terminate Program
     """)
+
+
 
 if __name__ == "__main__":
     b = None # holds the current instance of bond
     while True:
-        menu()
-        choice = int(input("Pick a menu option: "))
-        if choice == 1:
-            print("Enter the necessary bond info")
-            maturity = int(input("Maturity of bond: "))
-            cpn_Rate = float(input("Coupon Rate (without %): "))
-            fv = float(input("Face/Par Value: "))
-            ytm = float(input("Yield to Maturity (without %): "))
-            quoted_price = float(input("Current Quoted Price (as %/ of FV): "))
-            b = Bond(maturity, cpn_Rate, fv, ytm, quoted_price)
-        elif choice == 2:
-            print(b)
-        elif choice == 3:
-            if b == None:
-                print("Must provide bond info first. Complete menu option 1.")
-            else:
-                print(f"${b.bond_Price()}")
-        elif choice == 4:
-            if b == None:
-                print("Must provide bond info first. Complete menu option 1.")
-            else:
-                print(f"Macaulay Duration: {Macaulay_Duration(b)}")
-        elif choice == 5:
-            if b == None:
-                print("Must provide bond info first. Complete menu option 1.")
-            else:
-                print(f"Modified Duration: {Modified_Duration(b)}")
-        elif choice == 6:
-            if b == None:
-                print("Must provide bond info first. Complete menu option 1.")
-            else:
-                print(f"Convexity of bond: {Convexity(b)}")
-        elif choice == 7:
-            if b == None:
-                print("Must provide bond info first. Complete menu option 1.")
-            else:
-                current_price = float(input("enter the current price of the bond in dollars: "))
-                print(f"HPR: {holding_Period_Return(b, current_price)}%")
-        elif choice == 8:
-            if b == None:
-                print("Must provide bond info first. Complete menu option 1.")
-            else:
-                if b.is_Discount():
-                    print("Bond is selling at a discount based on quoted and calculated price.")
-                elif b.is_Premium():
-                    print("Bond is selling at a premium based on quoted and calculated price.")
-                else:
-                    print("Bond is selling at par based on quoted and calculated price.")
-        elif choice == 0:
-            print("Terminating program....")
+        print("Enter the necessary bond info")
+        issuer = input("Issuer of Bond: ")
+        maturity = int(input("Maturity of bond: "))
+        cpn_Rate = float(input("Coupon Rate (as decimal): "))
+        fv = float(input("Face/Par Value: "))
+        ytm = float(input("Yield to Maturity (as decimal): "))
+        quoted_price = float(input("Current Quoted Price: "))
+        b = Bond(maturity, cpn_Rate, fv, ytm, quoted_price)
+        convexity = Convexity(b)
+        modDur = Modified_Duration(b)
+        macDur = Macaulay_Duration(b)
+
+        print(f"Issuer: {issuer}")
+        print(b)
+        print("=============================================")
+        print(f"Additional Metrics:\nConvexity: {convexity}\nModified Duration: {modDur}\nMacaualay Duration: {macDur}")
+        print("=============================================\n")
+
+        choice = input("Continue operations (y/n)? ").lower()
+        if choice == 'n':
             break
+    
+    print("Terminating program...")
 
