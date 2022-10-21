@@ -45,7 +45,7 @@ def Convexity(b: Bond)->float:
         return round(total, 2)
 
     first_factor = 1 / (b.bond_Price() * pow(1 + b.get_YTM(), 2))
-    return first_factor * second_factor()
+    return round(first_factor * second_factor(), 2)
 
 def holding_Period_Return(b: Bond, current_price)->float:
     """Returns the holding period return of the passed in bond"""
