@@ -59,11 +59,13 @@ class Bond:
             # calculate the current discount factor for period t
             discountFactor = self.__getDiscountFactor(t, payments)
 
+            # if the current period t is the last period
+            # add the face value in addition to the coupon
             if t == totalPeriods:
-                pvOfCashFlow = (coupon + self.__faceValue) * discountFactor
+                pvOfCashFlow = ( (coupon / payments) + self.__faceValue) * discountFactor
                 bondPrice += pvOfCashFlow
             else:
-                pvOfCashFlow = coupon * discountFactor
+                pvOfCashFlow = (coupon / payments) * discountFactor
                 bondPrice += pvOfCashFlow
 
         return round(bondPrice, 2)
