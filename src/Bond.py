@@ -5,7 +5,7 @@ class Bond:
 
     """Constructor -- Creates instances of Bond class"""
     def __init__(self, fv, cpn, n, ytm, m):
-        self.__faveValue = fv
+        self.__faceValue = fv
         self.__cpnRate = cpn
         self.__yearsUntilMaturity = n
         self.__yieldToMaturity = ytm
@@ -13,7 +13,7 @@ class Bond:
 
     """Accessor Functions"""
     def getFaceValue(self) -> float:
-        return self.__faveValue
+        return self.__faceValue
     
     def getCpnRate(self) -> float:
         return self.__cpnRate
@@ -51,7 +51,7 @@ class Bond:
     def calculateBondPrice(self) -> float:
         coupon = self.__faceValue * self.__cpnRate # calculate the cash flow paid per period
         payments = self.__calculatePaymentsPerYear() # get payments per year
-        totalPeriods = payments * self.__maturity # calculate the number of periods
+        totalPeriods = payments * self.__yearsUntilMaturity # calculate the number of periods
 
         bondPrice = 0 # represents the price of the bond
 
@@ -82,3 +82,4 @@ class Bond:
     # returns the discount factor for period t with a m 
     def __getDiscountFactor(self, t: int, m: int):
         return 1 / pow((1+ (self.__yieldToMaturity / m)), t)
+    

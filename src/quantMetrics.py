@@ -2,7 +2,7 @@ from Bond import Bond
 from math import pow
 
 def MacaulayDuration(b: Bond) -> float:
-    coupon = b.getCpnRate() * b.getFaceValue
+    coupon = b.getCpnRate() * b.getFaceValue()
     compounding = getCompounding(b)
     totalPeriods = compounding * b.getYearsUntilMaturity()
 
@@ -23,7 +23,7 @@ def MacaulayDuration(b: Bond) -> float:
 
 def ModifiedDuration(b: Bond) -> float:
     compunding = getCompounding(b)
-    return MacaulayDuration(b) / (1 + (b.getYieldToMaturity / compunding))
+    return MacaulayDuration(b) / (1 + (b.getYieldToMaturity() / compunding))
 
 
 """ Helper Function for the above methods """
