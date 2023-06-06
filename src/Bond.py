@@ -1,67 +1,82 @@
 
+from math import pow
+
 class Bond:
 
-    def __init__(self, m, cr, fv, ytm, p):
-        self.__maturity = m
-        self.__cpnRate = cr
-        self.__faceValue = fv
+    """Constructor -- Creates instances of Bond class"""
+    def __init__(self, fv, cpn, n, ytm, m):
+        self.__faveValue = fv
+        self.__cpnRate = cpn
+        self.__yearsUntilMaturity = n
         self.__yieldToMaturity = ytm
-        self.__quotedPrice = p
-        self.__calculatedPrice = 0
+        self.__paymentsPerYear = m
 
-    """Getter Methods"""
-    def get_Maturity(self)->int:
-        return self.__maturity
-
-    def get_Coupon_Rate(self)->float:
+    """Accessor Functions"""
+    def getFaceValue(self) -> float:
+        return self.__faveValue
+    
+    def getCpnRate(self) -> float:
         return self.__cpnRate
-
-    def get_Face_Val(self)->float:
-        return self.__faceValue
-
-    def get_Price_Quoted(self)->float:
-        return self.__quotedPrice
-
-    def get_YTM(self)->float:
+    
+    def getYearsUntilMaturity(self) -> int:
+        return self.__yearsUntilMaturity
+    
+    def getYieldToMaturity(self) -> float:
         return self.__yieldToMaturity
+    
+    def getPaymentsPerYear(self) -> str:
+        return self.__paymentsPerYear
+    
+    """Modifier Functions"""
+    def setFaceValue(self, fv: float):
+        self.__faceValue = fv
 
-    def get_Calc_Price(self)->float:
-        """If price was not calcualted indicate so to user when calling this method"""
-        return self.bond_Price()
+    def setCpnRate(self, cpn: float):
+        self.__cpnRate = cpn
 
+    def setYearsUntilMaturity(self, n: int):
+        self.__yearsUntilMaturity = n
+
+    def setYieldToMaturity(self, ytm: float):
+        self.__yieldToMaturity = ytm
+
+    def setPaymentsPerYear(self, m: str):
+        self.__paymentsPerYear = m
 
     """
-        These functions help calculate the bond price 
-        based on the object's attributes
+        Calculates the bonds price by discounting the coupon payments
+        and sums up the discounted cash flows to get the price of the
+        bond.
     """
-    def __discount_Cpn(self, t)->float:
-        """A helper function for discounting individual coupons at time t"""
-        cpn = self.__faceValue * (self.__cpnRate)
+    def calculateBondPrice(self) -> float:
+        coupon = self.__faceValue * self.__cpnRate # calculate the cash flow paid per period
+        payments = self.__calculatePaymentsPerYear() # get payments per year
+        totalPeriods = payments * self.__maturity # calculate the number of periods
 
-        """Special case: if t is the final payment then we discount the cpn plus face value"""
-        if t == self.__maturity:
-            return (cpn + self.__faceValue) / pow(1 + (self.__yieldToMaturity), t)
-        return cpn / pow(1 + (self.__yieldToMaturity), t)
+        bondPrice = 0 # represents the price of the bond
 
-    def __calc_Price(self)->float:
-        """The function that performs the actual bond price calculation
-        
-        Each coupon payment is discounted from time t to present and the results
-        are summed up to give the price"""
-        price = 0
-        for i in range(1, self.__maturity + 1):
-            price += self.__discount_Cpn(i)
-        return price
+        for t in range(1, totalPeriods + 1):
+            # calculate the current discount factor for period t
+            discountFactor = self.__getDiscountFactor(t, payments)
 
-    def bond_Price(self):
-        """Calculates the bond price and assigns it to the _calculatedPrice attribute
-        
-        The actual calculation is performed by a separate method"""
-        self.__calculatedPrice = self.__calc_Price()
-        return round(self.__calculatedPrice, 2)
+            if t == totalPeriods:
+                pvOfCashFlow = (coupon + self.__faceValue) * discountFactor
+                bondPrice += pvOfCashFlow
+            else:
+                pvOfCashFlow = coupon * discountFactor
+                bondPrice += pvOfCashFlow
 
-    """Returns a string representation of the object"""
-    def __str__(self) -> str:
-        return f"=============================================\nPrice: {round(self.__quotedPrice / 10, 2)}%\nPar Value: ${self.__faceValue}\nYield to Maturity: {self.__yieldToMaturity * 100}%\nCoupon: {self.__cpnRate * 100}%\nMaturity: {self.__maturity} year(s)\n============================================="
+        return round(bondPrice, 2)
 
+    def __calculatePaymentsPerYear(self) -> int:
+        # determine how many payments per year there are
+        if self.__paymentsPerYear == 'A':
+            return 1 # annual
+        elif self.__paymentsPerYear == 'S':
+            return 2 # semiannual
+        else:
+            return 4 # quarterly
 
+    # returns the discount factor for period t with a m 
+    def __getDiscountFactor(self, t: int, m: int):
+        return 1 / pow((1+ (self.__yieldToMaturity / m)), t)
